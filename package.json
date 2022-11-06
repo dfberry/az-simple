@@ -1,0 +1,32 @@
+{
+  "name": "az-simple",
+  "version": "0.0.1",
+  "description": "preview",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build":"tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dfberry/az-simple"
+  },
+  "bugs":{
+    "url": "https://github.com/dfberry/az-simple/issues"
+  },
+  "homepage": "https://github.com/dfberry/az-simple#readme",
+  "author": "Dina Berry",
+  "license": "ISC",
+  "dependencies": {
+    "@azure/identity": "^3.0.0",
+    "@azure/keyvault-secrets": "^4.6.0",
+    "@types/node": "^18.11.9",
+    "dotenv": "^16.0.3",
+    "jest": "^29.2.2",
+    "ms-rest-azure": "^3.0.2",
+    "node-fetch": "^2.6.7"
+  },
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  }
+}
