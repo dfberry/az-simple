@@ -1,3 +1,6 @@
+import { KeyVaultSecret } from "./azure/key-vault-secret";
 
 
-export * from './azure'
+export {
+    KeyVaultSecret
+}

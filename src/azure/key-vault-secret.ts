@@ -1,7 +1,7 @@
 const { SecretClient } = require("@azure/keyvault-secrets");
 const { DefaultAzureCredential } = require("@azure/identity");
 
-class KeyVaultSecret {
+export class KeyVaultSecret {
 
   keyVaultName: string;
   keyVaultUrl: string;
@@ -24,5 +24,3 @@ class KeyVaultSecret {
     return await this.keyVaultSdkClient.beginDeleteSecret(secretName);
   }
 }
-
-export default KeyVaultSecret;

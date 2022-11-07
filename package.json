@@ -1,12 +1,15 @@
 {
-  "name": "az-simple",
-  "version": "0.0.1",
+  "name": "@azberry/az-simple",
+  "version": "0.0.4",
   "description": "preview",
   "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build":"tsc"
   },
+  "files":[
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/dfberry/az-simple"
