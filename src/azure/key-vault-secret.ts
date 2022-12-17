@@ -1,26 +1,36 @@
-const { SecretClient } = require("@azure/keyvault-secrets");
-const { DefaultAzureCredential } = require("@azure/identity");
+import { SecretClient } from '@azure/keyvault-secrets';
+import { DefaultAzureCredential } from '@azure/identity';
 
+/**
+ *
+ */
 export class KeyVaultSecret {
-
   keyVaultName: string;
   keyVaultUrl: string;
-  keyVaultSdkClient: any;
+  keyVaultSdkClient: SecretClient;
 
-  constructor(keyVaultName: string){
+  /**
+   *
+   * @param keyVaultName
+   * @param credential - Any @azure/identity credential
+   */
+  constructor(keyVaultName: string) {
     this.keyVaultName = keyVaultName;
 
-    this.keyVaultUrl = "https://" + keyVaultName + ".vault.azure.net";
-    this.keyVaultSdkClient = new SecretClient(this.keyVaultUrl, new DefaultAzureCredential());
+    this.keyVaultUrl = 'https://' + keyVaultName + '.vault.azure.net';
+    this.keyVaultSdkClient = new SecretClient(
+      this.keyVaultUrl,
+      new DefaultAzureCredential()
+    );
   }
-    
-  async getSecret(secretName: string){
+
+  async getSecret(secretName: string) {
     return await this.keyVaultSdkClient.getSecret(secretName);
   }
-  async setSecret(secretName: string, secretValue:string){
+  async setSecret(secretName: string, secretValue: string) {
     return await this.keyVaultSdkClient.setSecret(secretName, secretValue);
   }
-  async deleteSerect(secretName:string){
+  async deleteSerect(secretName: string) {
     return await this.keyVaultSdkClient.beginDeleteSecret(secretName);
   }
 }

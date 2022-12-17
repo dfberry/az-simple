@@ -1,35 +1,51 @@
 {
   "name": "@azberry/az-simple",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "preview",
   "main": "./dist/index.js",
   "scripts": {
+    "build:all": "npm run format && npm run lint && npm run build",
+    "format": "prettier --write src/**/*.ts",
+    "lint": "eslint src/**/*.ts --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build":"tsc"
+    "build": "tsc",
+    "publish": "npm publish"
   },
-  "files":[
+  "files": [
     "dist"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/dfberry/az-simple"
   },
-  "bugs":{
+  "bugs": {
     "url": "https://github.com/dfberry/az-simple/issues"
   },
   "homepage": "https://github.com/dfberry/az-simple#readme",
   "author": "Dina Berry",
   "license": "ISC",
   "dependencies": {
+    "@azure/cognitiveservices-translatortext": "^1.0.1",
+    "@azure/cosmos": "^3.17.2",
     "@azure/identity": "^3.0.0",
     "@azure/keyvault-secrets": "^4.6.0",
+    "@azure/ms-rest-azure-js": "^2.1.0",
+    "@azure/storage-blob": "^12.12.0",
     "@types/node": "^18.11.9",
     "dotenv": "^16.0.3",
     "jest": "^29.2.2",
+    "mongodb": "^4.12.1",
     "ms-rest-azure": "^3.0.2",
     "node-fetch": "^2.6.7"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.26.0",
+    "@typescript-eslint/parser": "^5.26.0",
+    "eslint": "^8.16.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "np": "^7.6.2",
+    "prettier": "^2.8.1",
     "typescript": "^4.8.4"
   }
 }
