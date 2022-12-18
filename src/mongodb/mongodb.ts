@@ -1,41 +1,32 @@
 import { MongoClient, OptionalId } from 'mongodb';
 
 export class MongoDb {
-  connectionString: string;
-  databaseName: string;
-  collectionName: string;
+  client: MongoClient;
 
-  constructor(
-    connectionString: string,
-    databaseName: string,
-    collectionName: string
-  ) {
-    this.connectionString = connectionString;
-    this.databaseName = databaseName;
-    this.collectionName = collectionName;
+  constructor(connectionString: string) {
+    this.client = new MongoClient(connectionString);
   }
 
-  async uploadArrToMongoDb(arrData: OptionalId<Document>[]): Promise<unknown> {
-    // Data exists and looks like its in the correct shape
-
-    if (!this.connectionString) throw new Error('connection string if missing');
-    if (!this.databaseName) throw new Error('databaseName is missing');
-    if (!this.collectionName) throw new Error('collectionName is missing');
-
-    if (!arrData) throw new Error('data is missing');
-    if (!arrData?.length || arrData.length === 0)
-      throw new Error('data found to be empty');
-
-    const client = new MongoClient(this.connectionString);
-
+  async uploadDocs(
+    databaseName: string,
+    collectionName: string,
+    arrData: unknown
+  ): Promise<unknown> {
     // Use connect method to connect to the server
-    await client.connect();
+    await this.client.connect();
+    const db = this.client.db(databaseName);
+    const collection = db.collection(collectionName);
 
-    const insertResult = await client
-      .db(this.databaseName)
-      .collection(this.collectionName)
-      .insertMany(arrData);
+    if (!Array.isArray(arrData)) {
+      arrData = [arrData];
+    }
 
+    const insertResult = await collection.insertMany(
+      arrData as OptionalId<Document>[]
+    );
     return insertResult;
+  }
+  close() {
+    this.client.close();
   }
 }

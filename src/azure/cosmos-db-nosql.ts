@@ -1,11 +1,7 @@
-import { CosmosClient, Database, Container } from '@azure/cosmos';
+import { CosmosClient, Container } from '@azure/cosmos';
 
 export class CosmosDBNoSql {
-  key: string;
-  endpoint: string;
   client: CosmosClient;
-  database: Database;
-  container: Container;
 
   /***
    * Constructor
@@ -14,14 +10,10 @@ export class CosmosDBNoSql {
    * @param endpoint - Url found in Azure portal
    */
   constructor(key: string, endpoint: string) {
-    this.key = key;
-    this.endpoint = endpoint;
     this.client = new CosmosClient({
-      key,
-      endpoint
+      endpoint,
+      key
     });
-    this.database = {} as Database;
-    this.container = {} as Container;
   }
   /**
    * Create database and container if they don't exist, returns container.
@@ -32,8 +24,7 @@ export class CosmosDBNoSql {
    */
   async createNewDatabaseAndContainer(
     databaseName: string,
-    containerName: string,
-    partitionKey: string
+    containerName: string
   ): Promise<Container> {
     // Create database
     const { database } = await this.client.databases.createIfNotExists({
@@ -42,12 +33,8 @@ export class CosmosDBNoSql {
 
     // Create container
     const { container } = await database.containers.createIfNotExists({
-      id: containerName,
-      partitionKey: partitionKey || '/modelType'
+      id: containerName
     });
-
-    this.database = database;
-    this.container = container;
 
     return container;
   }
@@ -57,7 +44,13 @@ export class CosmosDBNoSql {
    * @param containerName
    * @returns Container
    */
-  getExistingContainer(databaseName: string, containerName: string): Container {
-    return this.client.database(databaseName).container(containerName);
+  async getExistingContainer(
+    databaseName: string,
+    containerName: string
+  ): Promise<Container> {
+    const container = await this.client
+      .database(databaseName)
+      .container(containerName);
+    return container;
   }
 }
