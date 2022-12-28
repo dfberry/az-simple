@@ -19,7 +19,18 @@ Azure Blob Storage service
 
 #### Abilities
 
-* Get JSON from blob
+* Containers: 
+    * Create if not exists
+    * Delete (includes all snapshots)
+* Blobs: 
+    * Get blob
+        * As Json
+        * As text
+        * As Buffer
+    * Upload blob
+        * From local file
+        * From readable stream
+    * Delete blob
 
 ### Cosmos DB (NoSql)
 
