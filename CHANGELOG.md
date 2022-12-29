@@ -1,3 +1,5 @@
+* 0.2.2 - readme.md
+    * fix sample code for list hierarchical blobs in container by page
 * 0.2.1 - storage
     * list hierarchical blobs in container by page
 * 0.2.0 - storage 

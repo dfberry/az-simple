@@ -1,6 +1,6 @@
 {
   "name": "@azberry/az-simple",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "preview",
   "main": "./dist/index.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "build": "tsc",
     "mgr:publish": "npm publish",
     "mgr:unpublish": "npm unpublish @azberry/az-simple@0.2.1",
-    "mgr:deprecate": "npm deprecate @azberry/az-simple@0.2.0 \"Use the latest version\""
+    "mgr:deprecate": "npm deprecate @azberry/az-simple@0.2.1 \"Use the latest version\""
   },
   "files": [
     "dist"

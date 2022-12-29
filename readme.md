@@ -34,60 +34,26 @@ Azure Blob Storage service
     * List blobs in container by page
 
         ```javascript
-        import {
-        BlobServiceClient,
-        StorageSharedKeyCredential,
-        } from "@azure/storage-blob";
-        import * as dotenv from "dotenv";
-        dotenv.config();
+        const name = process.env.AZURE_BLOB_STORAGE_ACCOUNT_NAME;
+        const key = process.env.AZURE_BLOB_STORAGE_ACCOUNT_KEY;
 
-        export async function listBlobs(
-        containerName: string,
-        prefixToFilterWith: string = ""
-        ) {
-            const storAccountName = process.env.AZURE_BLOB_STORAGE_ACCOUNT_NAME;
-            const storAccountKey = process.env.AZURE_BLOB_STORAGE_ACCOUNT_KEY;
+        const containerName = 'test';               // exact container name
+        const prefixStr = 's';                      // subdirs and files that start with 's'
+        const delimiter = '/';                      //
+        const pageSettings = { maxPageSize: 10 };   // don't pass empty `continuationToken`
 
-            const baseUrl = `https://${storAccountName}.blob.core.windows.net`;
+        try {
+            const client = new BlobStorage(name, key);
 
-            // Create credential
-            const credential = new StorageSharedKeyCredential(
-                storAccountName as string,
-                storAccountKey as string
+            const results = await client.listBlobsInContainer(
+            containerName,
+            pageSettings,
+            prefixStr,
+            delimiter
             );
 
-            // Create Azure serivce client
-            const blobServiceClient = new BlobServiceClient(`${baseUrl}`, credential);
-
-            // Create Azure container client
-            const containerClient = await blobServiceClient.getContainerClient(
-                containerName
-            );
-
-            const delimiter = "/";
-            const listOptions = {
-                includeCopy: true,
-                includeDeleted: true,
-                includeMetadata: true,
-                includeUncommitedBlobs: true,
-                prefix: prefixToFilterWith,
-            };
-
-            // Only pass `continuationToken` if it has a value (no empty strings)
-            // Ex: const pageSettings = { maxPageSize: 10, continuationToken: `STRING-RETURNED-FROM-PREVIOUS-PAGE` };
-            const pageSettings = { maxPageSize: 10 };
-
-            // Get Async Iterator
-            const iteration = await containerClient
-                .listBlobsByHierarchy(delimiter, listOptions)
-                .byPage(pageSettings)
-                .next();
-
-            // Get value (results) of iterator
-            const result = iteration.value;
-
-            // shape of result
-            // export type HierarchicalListingResponse = {
+            // shape of results as type HierarchicalListingResponse
+            // {
             //   serviceEndpoint: string | undefined;
             //   container: string;
             //   prefix: string;
@@ -97,11 +63,10 @@ Azure Blob Storage service
             //   blobNames: string[] | undefined;
             //   error: string | number | undefined | Error;
             // };
-            if (result) {
-                console.log(`${JSON.stringify(result)}`);
-            } else {
-                console.log(`no result returned`);
-            }
+
+            return results;
+        } catch (err) {
+            console.log(JSON.stringify(err));
         }
         ```
 
