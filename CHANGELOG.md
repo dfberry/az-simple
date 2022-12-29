@@ -1,3 +1,7 @@
+* 0.2.5 - storage - fix return 
+* 0.2.4 - storage - export types
+* 0.2.3 - readme.md
+    * fix sample code for list hierarchical blobs in container by page
 * 0.2.2 - readme.md
     * fix sample code for list hierarchical blobs in container by page
 * 0.2.1 - storage

@@ -231,7 +231,7 @@ export class BlobStorage {
             (blobItem: { name: string }) => blobItem?.name as string
           );
         return {
-          serviceEndpoint: listBlobsByHierarchyResponse,
+          serviceEndpoint: listBlobsByHierarchyResponse.serviceEndpoint,
           container: listBlobsByHierarchyResponse.containerName,
           prefix: listBlobsByHierarchyResponse.prefix,
           delimiter: listBlobsByHierarchyResponse.delimiter,

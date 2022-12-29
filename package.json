@@ -1,6 +1,6 @@
 {
   "name": "@azberry/az-simple",
-  "version": "0.2.2",
+  "version": "0.2.5",
   "description": "preview",
   "main": "./dist/index.js",
   "scripts": {
@@ -9,8 +9,8 @@
     "lint": "eslint src/**/*.ts --fix",
     "build": "tsc",
     "mgr:publish": "npm publish",
-    "mgr:unpublish": "npm unpublish @azberry/az-simple@0.2.1",
-    "mgr:deprecate": "npm deprecate @azberry/az-simple@0.2.1 \"Use the latest version\""
+    "mgr:unpublish": "npm unpublish @azberry/az-simple@0.2.4",
+    "mgr:deprecate": "npm deprecate @azberry/az-simple@0.2.4 \"Use the latest version\""
   },
   "files": [
     "dist"

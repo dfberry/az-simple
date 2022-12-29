@@ -34,6 +34,8 @@ Azure Blob Storage service
     * List blobs in container by page
 
         ```javascript
+        import { BlobStorage } from '@azberry/az-simple';
+        
         const name = process.env.AZURE_BLOB_STORAGE_ACCOUNT_NAME;
         const key = process.env.AZURE_BLOB_STORAGE_ACCOUNT_KEY;
 
