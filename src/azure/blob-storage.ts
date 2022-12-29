@@ -162,13 +162,13 @@ export class BlobStorage {
 
       if (!exists) {
         return {
-          serviceEndpoint: undefined,
+          serviceEndpoint: '',
           container: containerName,
           prefix: prefixStr,
           delimiter,
           pageSettings: { maxPageSize: pageSettings.maxPageSize },
-          subDirectoryNames: undefined,
-          blobNames: undefined,
+          subDirectoryNames: [],
+          blobNames: [],
           error: "Container doesn't exist"
         };
       }
@@ -203,13 +203,13 @@ export class BlobStorage {
 
       if (delimiter === '') {
         return {
-          serviceEndpoint: undefined,
+          serviceEndpoint: '',
           container: containerName,
           prefix: prefixStr,
           delimiter,
           pageSettings: { maxPageSize: pageSettings.maxPageSize },
-          subDirectoryNames: undefined,
-          blobNames: undefined,
+          subDirectoryNames: [],
+          blobNames: [],
           error: 'Delimiter should contain 1 or more characters'
         };
       }
@@ -233,7 +233,7 @@ export class BlobStorage {
         return {
           serviceEndpoint: listBlobsByHierarchyResponse.serviceEndpoint,
           container: listBlobsByHierarchyResponse.containerName,
-          prefix: listBlobsByHierarchyResponse.prefix,
+          prefix: prefixStr,
           delimiter: listBlobsByHierarchyResponse.delimiter,
           pageSettings: {
             maxPageSize: listBlobsByHierarchyResponse.maxPageSize,
@@ -241,29 +241,29 @@ export class BlobStorage {
           },
           subDirectoryNames: subdirNames,
           blobNames,
-          error: undefined
+          error: ''
         };
       } else {
         return {
-          serviceEndpoint: undefined,
+          serviceEndpoint: '',
           container: containerName,
           prefix: prefixStr,
           delimiter,
           pageSettings: { maxPageSize: pageSettings.maxPageSize },
-          subDirectoryNames: undefined,
-          blobNames: undefined,
+          subDirectoryNames: [],
+          blobNames: [],
           error: JSON.stringify(iterator)
         };
       }
     } catch (err) {
       return {
-        serviceEndpoint: undefined,
+        serviceEndpoint: '',
         container: containerName,
         prefix: prefixStr,
         delimiter,
         pageSettings: { maxPageSize: pageSettings.maxPageSize },
-        subDirectoryNames: undefined,
-        blobNames: undefined,
+        subDirectoryNames: [],
+        blobNames: [],
         error: err as Error
       };
     }
