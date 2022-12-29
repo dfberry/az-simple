@@ -1,6 +1,6 @@
 {
   "name": "@azberry/az-simple",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "preview",
   "main": "./dist/index.js",
   "scripts": {
@@ -9,8 +9,8 @@
     "lint": "eslint src/**/*.ts --fix",
     "build": "tsc",
     "mgr:publish": "npm publish",
-    "mgr:unpublish": "npm unpublish @azberry/az-simple@2.0.0",
-    "mgr:deprecate": "npm deprecate @azberry/az-simple@0.1.6 \"Use the latest version\""
+    "mgr:unpublish": "npm unpublish @azberry/az-simple@0.2.1",
+    "mgr:deprecate": "npm deprecate @azberry/az-simple@0.2.0 \"Use the latest version\""
   },
   "files": [
     "dist"
@@ -27,8 +27,9 @@
   "license": "ISC",
   "dependencies": {
     "@azure/cognitiveservices-translatortext": "^1.0.1",
+    "@azure/core-paging": "^1.4.0",
     "@azure/cosmos": "^3.17.2",
-    "@azure/identity": "^3.0.0",
+    "@azure/identity": "^1.1.0",
     "@azure/keyvault-secrets": "^4.6.0",
     "@azure/ms-rest-azure-js": "^2.1.0",
     "@azure/storage-blob": "^12.12.0",
@@ -44,7 +45,7 @@
     "eslint": "^8.16.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "np": "^7.6.2",
+    "np": "^7.6.3",
     "prettier": "^2.8.1",
     "typescript": "^4.8.4"
   }

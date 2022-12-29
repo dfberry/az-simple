@@ -31,6 +31,79 @@ Azure Blob Storage service
         * From local file
         * From readable stream
     * Delete blob
+    * List blobs in container by page
+
+        ```javascript
+        import {
+        BlobServiceClient,
+        StorageSharedKeyCredential,
+        } from "@azure/storage-blob";
+        import * as dotenv from "dotenv";
+        dotenv.config();
+
+        export async function listBlobs(
+        containerName: string,
+        prefixToFilterWith: string = ""
+        ) {
+            const storAccountName = process.env.AZURE_BLOB_STORAGE_ACCOUNT_NAME;
+            const storAccountKey = process.env.AZURE_BLOB_STORAGE_ACCOUNT_KEY;
+
+            const baseUrl = `https://${storAccountName}.blob.core.windows.net`;
+
+            // Create credential
+            const credential = new StorageSharedKeyCredential(
+                storAccountName as string,
+                storAccountKey as string
+            );
+
+            // Create Azure serivce client
+            const blobServiceClient = new BlobServiceClient(`${baseUrl}`, credential);
+
+            // Create Azure container client
+            const containerClient = await blobServiceClient.getContainerClient(
+                containerName
+            );
+
+            const delimiter = "/";
+            const listOptions = {
+                includeCopy: true,
+                includeDeleted: true,
+                includeMetadata: true,
+                includeUncommitedBlobs: true,
+                prefix: prefixToFilterWith,
+            };
+
+            // Only pass `continuationToken` if it has a value (no empty strings)
+            // Ex: const pageSettings = { maxPageSize: 10, continuationToken: `STRING-RETURNED-FROM-PREVIOUS-PAGE` };
+            const pageSettings = { maxPageSize: 10 };
+
+            // Get Async Iterator
+            const iteration = await containerClient
+                .listBlobsByHierarchy(delimiter, listOptions)
+                .byPage(pageSettings)
+                .next();
+
+            // Get value (results) of iterator
+            const result = iteration.value;
+
+            // shape of result
+            // export type HierarchicalListingResponse = {
+            //   serviceEndpoint: string | undefined;
+            //   container: string;
+            //   prefix: string;
+            //   delimiter: string;
+            //   pageSettings: PageSettings;
+            //   subDirectoryNames: string[] | undefined;
+            //   blobNames: string[] | undefined;
+            //   error: string | number | undefined | Error;
+            // };
+            if (result) {
+                console.log(`${JSON.stringify(result)}`);
+            } else {
+                console.log(`no result returned`);
+            }
+        }
+        ```
 
 ### Cosmos DB (NoSql)
 

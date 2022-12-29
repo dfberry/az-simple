@@ -11,8 +11,11 @@ import {
   Metadata,
   PublicAccessType,
   StorageSharedKeyCredential,
-  Tags
+  Tags,
+  BlobPrefix,
+  ListBlobsHierarchySegmentResponse
 } from '@azure/storage-blob';
+import { PageSettings } from '@azure/core-paging';
 import internal, { Transform } from 'stream';
 import { streamToBuffer } from '../shared/streams';
 
@@ -32,6 +35,21 @@ export type BlobResponse = {
   blobUrl: string;
   buffer?: Buffer;
 } & StorageResponse;
+
+export type BlobPageResponse = {
+  page: ListBlobsHierarchySegmentResponse;
+} & StorageResponse;
+
+export type HierarchicalListingResponse = {
+  serviceEndpoint: string | undefined;
+  container: string;
+  prefix: string;
+  delimiter: string;
+  pageSettings: PageSettings;
+  subDirectoryNames: string[] | undefined;
+  blobNames: string[] | undefined;
+  error: string | number | undefined | Error;
+};
 
 export type ContainerResponse = {
   json?: Record<string, unknown> | undefined;
@@ -96,6 +114,159 @@ export class BlobStorage {
     const containerDeleteResponse: ContainerDeleteResponse =
       await containerClient.delete();
     return { containerName, error: containerDeleteResponse.errorCode };
+  }
+  /**
+   * Listing results includes the required information to build a blobUrl to fetch the blob contents or further walk the dir structure.
+   *
+   * Assume hierarchical directories - requires Gen 2 storage (hierarchical namespaces). You must page a continuation
+   * token in the pageSettings to get any page other than the first page.
+   * @param containerName - Container to list
+   * @param pageSettings - do not pass continuationToken if it is empty or has no value, maxPageSize defaults to 10
+   * @param prefixStr - Set to empty for top level dir, set to '/' for subdir, set to 'subdir/' for specific subdir, set to char(s) to max subdir or blob
+   * @param delimiter - '/'
+   * @returns
+   *
+   * {
+   *    serviceEndpoint: `https://YOUR-ACCOUNT-NAME.blob.core.windows.net/`,
+   *    container: containerName,
+   *    prefix: prefixStr,
+   *    delimiter,
+   *    pageSettings: { maxPageSize: pageSettings.maxPageSize },
+   *    subDirectoryNames: string[],
+   *    blobNames: string[],
+   *    error: string | number | Error
+   * }
+   */
+  async listBlobsInContainer(
+    containerName: string,
+    pageSettings: PageSettings = {
+      maxPageSize: 10
+    },
+    prefixStr = '',
+    delimiter = '/'
+  ): Promise<HierarchicalListingResponse> {
+    try {
+      const baseUrl = `https://${this.storageAccountName}.blob.core.windows.net`;
+
+      const blobServiceClient = new BlobServiceClient(
+        `${baseUrl}`,
+        this.credential
+      );
+      const containerClient = await blobServiceClient.getContainerClient(
+        containerName
+      );
+
+      // verify that container exists
+      // note: another client could remove or replace container wihtout warning
+      const exists = await containerClient.exists();
+
+      if (!exists) {
+        return {
+          serviceEndpoint: undefined,
+          container: containerName,
+          prefix: prefixStr,
+          delimiter,
+          pageSettings: { maxPageSize: pageSettings.maxPageSize },
+          subDirectoryNames: undefined,
+          blobNames: undefined,
+          error: "Container doesn't exist"
+        };
+      }
+
+      // some options for filtering list
+      const listOptions = {
+        includeCopy: true,
+        includeDeleted: true,
+        includeMetadata: true,
+        includeUncommitedBlobs: true,
+        prefix: prefixStr
+      };
+
+      // fix page size
+      if (
+        pageSettings.maxPageSize === undefined ||
+        pageSettings.maxPageSize === 0 ||
+        pageSettings.maxPageSize > 100
+      ) {
+        pageSettings.maxPageSize = 10;
+      }
+
+      // Don't pass empty continuation token,
+      // it will return no results
+      if (
+        pageSettings.continuationToken === '' ||
+        pageSettings.continuationToken === undefined ||
+        pageSettings.continuationToken === null
+      ) {
+        delete pageSettings.continuationToken;
+      }
+
+      if (delimiter === '') {
+        return {
+          serviceEndpoint: undefined,
+          container: containerName,
+          prefix: prefixStr,
+          delimiter,
+          pageSettings: { maxPageSize: pageSettings.maxPageSize },
+          subDirectoryNames: undefined,
+          blobNames: undefined,
+          error: 'Delimiter should contain 1 or more characters'
+        };
+      }
+
+      const iterator = await containerClient
+        .listBlobsByHierarchy(delimiter, listOptions)
+        .byPage(pageSettings)
+        .next();
+
+      const listBlobsByHierarchyResponse = iterator.value;
+
+      if (iterator.value) {
+        const subdirNames: string[] =
+          listBlobsByHierarchyResponse?.segment?.blobPrefixes.map(
+            (blobPrefix: BlobPrefix) => blobPrefix.name
+          );
+        const blobNames: string[] =
+          listBlobsByHierarchyResponse?.segment?.blobItems.map(
+            (blobItem: { name: string }) => blobItem?.name as string
+          );
+        return {
+          serviceEndpoint: listBlobsByHierarchyResponse,
+          container: listBlobsByHierarchyResponse.containerName,
+          prefix: listBlobsByHierarchyResponse.prefix,
+          delimiter: listBlobsByHierarchyResponse.delimiter,
+          pageSettings: {
+            maxPageSize: listBlobsByHierarchyResponse.maxPageSize,
+            continuationToken: listBlobsByHierarchyResponse.continuationToken
+          },
+          subDirectoryNames: subdirNames,
+          blobNames,
+          error: undefined
+        };
+      } else {
+        return {
+          serviceEndpoint: undefined,
+          container: containerName,
+          prefix: prefixStr,
+          delimiter,
+          pageSettings: { maxPageSize: pageSettings.maxPageSize },
+          subDirectoryNames: undefined,
+          blobNames: undefined,
+          error: JSON.stringify(iterator)
+        };
+      }
+    } catch (err) {
+      return {
+        serviceEndpoint: undefined,
+        container: containerName,
+        prefix: prefixStr,
+        delimiter,
+        pageSettings: { maxPageSize: pageSettings.maxPageSize },
+        subDirectoryNames: undefined,
+        blobNames: undefined,
+        error: err as Error
+      };
+    }
   }
 
   /**
