@@ -33,6 +33,16 @@ Azure Blob Storage service
     * Delete blob
     * List blobs in container by page
 
+        * Delimiter
+            * [Explanation](https://learn.microsoft.com/en-us/rest/api/storageservices/enumerating-blob-resources#DelimitedBlobList)
+        * Prefix
+            * to search subdirs and files: use string like 's' to search for any that begin with 's'
+            * to search subdirs only: use string like 'subdirName/' or 'subdirName/s' 
+        * Page settings
+            * limit results to small number such as 10
+            * add continuationToken value to next query if it is returned from current query 
+                * `{ maxPageSize: 10, continuationToken: 'abc' }`
+
         ```javascript
         import { BlobStorage } from '@azberry/az-simple';
         

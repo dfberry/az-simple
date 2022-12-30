@@ -4,7 +4,8 @@ export {
   BlobResponse,
   BlobPageResponse,
   HierarchicalListingResponse,
-  ContainerResponse
+  ContainerResponse,
+  PageSettings
 } from './azure/blob-storage';
 export { MongoDb } from './mongodb/mongodb';
 export { KeyVaultSecret } from './azure/key-vault-secret';

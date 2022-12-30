@@ -19,6 +19,9 @@ import { PageSettings } from '@azure/core-paging';
 import internal, { Transform } from 'stream';
 import { streamToBuffer } from '../shared/streams';
 
+// Hoist 3rd party types
+export { PageSettings };
+
 /**
  * Works with BlockBlobs.
  */
@@ -140,7 +143,8 @@ export class BlobStorage {
   async listBlobsInContainer(
     containerName: string,
     pageSettings: PageSettings = {
-      maxPageSize: 10
+      maxPageSize: 10,
+      continuationToken: ''
     },
     prefixStr = '',
     delimiter = '/'
