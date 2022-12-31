@@ -8,57 +8,21 @@ import {
   BlockBlobUploadStreamOptions,
   ContainerCreateOptions,
   ContainerDeleteResponse,
-  Metadata,
   PublicAccessType,
   StorageSharedKeyCredential,
   Tags,
-  BlobPrefix,
-  ListBlobsHierarchySegmentResponse
+  BlobPrefix
 } from '@azure/storage-blob';
-import { PageSettings } from '@azure/core-paging';
 import internal, { Transform } from 'stream';
 import { streamToBuffer } from '../shared/streams';
 
-// Hoist 3rd party types
-export { PageSettings };
-
-/**
- * Works with BlockBlobs.
- */
-
-export type StorageResponse = {
-  succeeded?: boolean;
-  error: string | number | undefined;
-  metadata?: Metadata | undefined;
-};
-
-export type BlobResponse = {
-  json?: Record<string, unknown> | undefined;
-  text?: string | undefined;
-  blobUrl: string;
-  buffer?: Buffer;
-} & StorageResponse;
-
-export type BlobPageResponse = {
-  page: ListBlobsHierarchySegmentResponse;
-} & StorageResponse;
-
-export type HierarchicalListingResponse = {
-  serviceEndpoint: string | undefined;
-  container: string;
-  prefix: string;
-  delimiter: string;
-  pageSettings: PageSettings;
-  subDirectoryNames: string[] | undefined;
-  blobNames: string[] | undefined;
-  error: string | number | undefined | Error;
-};
-
-export type ContainerResponse = {
-  json?: Record<string, unknown> | undefined;
-  text?: string | undefined;
-  containerName: string;
-} & StorageResponse;
+import {
+  Metadata,
+  PageSettings,
+  BlobResponse,
+  HierarchicalListingResponse,
+  ContainerResponse
+} from './blob-storage-models';
 
 export class BlobStorage {
   storageAccountName: string;

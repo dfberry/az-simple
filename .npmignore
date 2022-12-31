@@ -10,3 +10,4 @@ dist/**/*.data.js
 tsconfig.**.json
 .eslint*
 .prettierrc
+*/**/__tests__
