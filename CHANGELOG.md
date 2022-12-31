@@ -1,3 +1,6 @@
+* 0.2.8
+    * organize types into Models
+    * Deprecate direct reference to blob storage models
 * 0.2.7
     * storage - readme example of prefix value, PageSettings type
 * 0.2.6 - storage - correct return for listing - including prefix and error
