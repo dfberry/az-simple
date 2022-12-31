@@ -7,6 +7,9 @@ export { AiTranslator } from './azure/translator';
 export { CosmosDBNoSql } from './azure/cosmos-db-nosql';
 
 // Backwards compatibility
+/**
+ * @deprecated Don't reference Blob models directly. Use the BlobStorageModels object.
+ */
 export * from './azure/blob-storage-models';
 
 // Models only
