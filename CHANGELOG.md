@@ -1,3 +1,5 @@
+* 0.2.9 
+    * Added Computer Vision analyze image
 * 0.2.8
     * organize types into Models
     * Deprecate direct reference to blob storage models

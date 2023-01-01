@@ -82,6 +82,195 @@ Azure Blob Storage service
         }
         ```
 
+### Computer Vision as AiVision
+
+Azure Cognitive Services Computer Vision
+
+* [Documentation](https://learn.microsoft.com/en-us/azure/cognitive-services/computer-vision)
+
+#### Prerequisites
+
+* Key
+* Endpoint
+
+#### Abilities
+
+* Analyze image
+            
+    ```javascript
+    const { AiVision } = require('@azberry/az-simple');
+    require('dotenv').config();
+
+    const key = process.env.AZURE_COMPUTER_VISION_KEY;
+    const endpoint = process.env.AZURE_COMPUTER_VISION_ENDPOINT;
+
+    async function mytest() {
+    const aiVision = new AiVision(key, endpoint);
+
+    const options = {
+        visualFeatures: [
+        'Categories',
+        'Brands',
+        'Adult',
+        'Color',
+        'Description',
+        'Faces',
+        'Objects',
+        'Tags'
+        ],
+        language: 'en'
+    };
+
+    const results = await aiVision.readImage(
+        'https://moderatorsampleimages.blob.core.windows.net/samples/sample16.png',
+        options
+    );
+
+    console.log(results);
+    }
+
+    mytest().catch((err) => console.log(err));
+    ```
+
+    Example response
+
+    ```json
+    {
+    "categories":[
+        {
+            "name":"animal_dog",
+            "score":0.99609375
+        }
+    ],
+    "adult":{
+        "isAdultContent":false,
+        "isRacyContent":false,
+        "isGoryContent":false,
+        "adultScore":0.0006656277109868824,
+        "racyScore":0.001631653867661953,
+        "goreScore":0.0007828648085705936
+    },
+    "color":{
+        "dominantColorForeground":"White",
+        "dominantColorBackground":"Grey",
+        "dominantColors":[
+            "Grey",
+            "Green"
+        ],
+        "accentColor":"A36D28",
+        "isBWImg":false,
+        "isBwImg":false
+    },
+    "tags":[
+        {
+            "name":"grass",
+            "confidence":0.9957543611526489
+        },
+        {
+            "name":"dog",
+            "confidence":0.9939157962799072
+        },
+        {
+            "name":"mammal",
+            "confidence":0.9928356409072876
+        },
+        {
+            "name":"animal",
+            "confidence":0.9918001890182495
+        },
+        {
+            "name":"dog breed",
+            "confidence":0.9890419244766235
+        },
+        {
+            "name":"pet",
+            "confidence":0.974603533744812
+        },
+        {
+            "name":"outdoor",
+            "confidence":0.969241738319397
+        },
+        {
+            "name":"companion dog",
+            "confidence":0.906731367111206
+        },
+        {
+            "name":"small greek domestic dog",
+            "confidence":0.8965123891830444
+        },
+        {
+            "name":"golden retriever",
+            "confidence":0.8877675533294678
+        },
+        {
+            "name":"labrador retriever",
+            "confidence":0.8746421337127686
+        },
+        {
+            "name":"puppy",
+            "confidence":0.872604250907898
+        },
+        {
+            "name":"ancient dog breeds",
+            "confidence":0.8508287668228149
+        },
+        {
+            "name":"field",
+            "confidence":0.8017748594284058
+        },
+        {
+            "name":"retriever",
+            "confidence":0.6837497353553772
+        },
+        {
+            "name":"brown",
+            "confidence":0.6581960916519165
+        }
+    ],
+    "description":{
+        "tags":[
+            "grass",
+            "dog",
+            "outdoor",
+            "animal",
+            "mammal",
+            "laying",
+            "tan"
+        ],
+        "captions":[
+            [
+                "Object"
+            ]
+        ]
+    },
+    "faces":[
+        
+    ],
+    "objects":[
+        {
+            "rectangle":[
+                "Object"
+            ],
+            "object":"dog",
+            "confidence":0.903,
+            "parent":[
+                "Object"
+            ]
+        }
+    ],
+    "brands":[
+        
+    ],
+    "requestId":"97f1e8cc-f07d-4e5b-b11c-13a7d6ddf607",
+    "metadata":{
+        "width":1295,
+        "height":1155,
+        "format":"Png"
+    },
+    "modelVersion":"2021-05-01"
+    }   
+    ```
+
 ### Cosmos DB (NoSql)
 
 Azure Cosmos DB NoSql
