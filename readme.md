@@ -271,6 +271,76 @@ Azure Cognitive Services Computer Vision
     }   
     ```
 
+### Content moderation as AiContentModeration
+
+Azure Cognitive Services Content Moderation
+
+* [Documentation](https://learn.microsoft.com/en-us/azure/cognitive-services/content-moderator/)
+
+#### Prerequisites
+
+* Key
+* Endpoint
+
+#### Abilities
+
+* Content moderation for text
+            
+    ```javascript
+    require('dotenv').config();
+
+    const { AiContentModeration } = require('@azberry/az-simple');
+
+    async function main() {
+    const contentModeratorKey = process.env.AZURE_CONTENT_MODERATION_KEY;
+    const contentModeratorEndPoint = process.env.AZURE_CONTENT_MODERATION_ENDPOINT;
+
+    const aiContentModeration = new AiContentModeration(
+        contentModeratorKey,
+        contentModeratorEndPoint
+    );
+
+    const result = await aiContentModeration.textModeration(
+        'text/plain',
+        'This is a fuck you to the world'
+    );
+    console.log(result);
+    }
+
+    main();
+    ```
+
+    Example response
+
+    ```json
+   {
+        "originalText":"This is a fuck you to the world",
+        "normalizedText":"   fuck you   world",
+        "misrepresentation":null,
+        "status":{
+        "code":3000,
+        "description":"OK",
+        "exception":null
+        },
+        "language":"eng",
+        "terms":[
+        {
+            "index":3,
+            "originalIndex":10,
+            "listId":0,
+            "term":"fuck"
+        },
+        {
+            "index":3,
+            "originalIndex":10,
+            "listId":0,
+            "term":"fuck you"
+        }
+        ],
+        "trackingId":"e60eb47f-262d-496c-90bb-8731fddc9a5b"
+    }
+    ```
+
 ### Cosmos DB (NoSql)
 
 Azure Cosmos DB NoSql

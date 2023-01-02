@@ -1,3 +1,5 @@
+* 0.2.10
+    * Content moderation for text
 * 0.2.9 
     * Added Computer Vision analyze image
 * 0.2.8
