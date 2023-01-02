@@ -105,28 +105,28 @@ Azure Cognitive Services Computer Vision
     const endpoint = process.env.AZURE_COMPUTER_VISION_ENDPOINT;
 
     async function mytest() {
-    const aiVision = new AiVision(key, endpoint);
+        const aiVision = new AiVision(key, endpoint);
 
-    const options = {
-        visualFeatures: [
-        'Categories',
-        'Brands',
-        'Adult',
-        'Color',
-        'Description',
-        'Faces',
-        'Objects',
-        'Tags'
-        ],
-        language: 'en'
-    };
+        const options = {
+            visualFeatures: [
+            'Categories',
+            'Brands',
+            'Adult',
+            'Color',
+            'Description',
+            'Faces',
+            'Objects',
+            'Tags'
+            ],
+            language: 'en'
+        };
 
-    const results = await aiVision.readImage(
-        'https://moderatorsampleimages.blob.core.windows.net/samples/sample16.png',
-        options
-    );
+        const results = await aiVision.readImage(
+            'https://moderatorsampleimages.blob.core.windows.net/samples/sample16.png',
+            options
+        );
 
-    console.log(results);
+        console.log(results);
     }
 
     mytest().catch((err) => console.log(err));
@@ -284,6 +284,58 @@ Azure Cognitive Services Content Moderation
 
 #### Abilities
 
+* Content moderation for images
+
+    ```javascript
+    const { AiContentModeration } = require('@azberry/az-simple');
+
+    async function main() {
+
+        const contentModeratorKey = process.env.AZURE_CONTENT_MODERATION_KEY;
+        const contentModeratorEndPoint = process.env.AZURE_CONTENT_MODERATION_ENDPOINT;
+
+        const aiContentModeration = new AiContentModeration(
+            contentModeratorKey,
+            contentModeratorEndPoint
+        );
+
+        const result = await aiContentModeration.imageModeration(
+            "https://moderatorsampleimages.blob.core.windows.net/samples/sample5.png"
+        );
+        console.log(result);
+    }
+
+    main();
+    ```
+
+Example response
+
+    ```json
+    {
+        "result":false,
+        "trackingId":"0ddfff0e-1b4b-4cd7-a0b4-6e44523b41bd",
+        "adultClassificationScore":0.001438833656720817,
+        "isImageAdultClassified":false,
+        "racyClassificationScore":0.004629917559213936,
+        "isImageRacyClassified":false,
+        "advancedInfo":[
+        {
+            "key":"ImageDownloadTimeInMs",
+            "value":"1099"
+        },
+        {
+            "key":"ImageSizeInBytes",
+            "value":"2278902"
+        }
+        ],
+        "status":{
+        "code":3000,
+        "description":"OK",
+        "exception":null
+        }
+    }
+    ```
+
 * Content moderation for text
             
     ```javascript
@@ -292,19 +344,19 @@ Azure Cognitive Services Content Moderation
     const { AiContentModeration } = require('@azberry/az-simple');
 
     async function main() {
-    const contentModeratorKey = process.env.AZURE_CONTENT_MODERATION_KEY;
-    const contentModeratorEndPoint = process.env.AZURE_CONTENT_MODERATION_ENDPOINT;
+        const contentModeratorKey = process.env.AZURE_CONTENT_MODERATION_KEY;
+        const contentModeratorEndPoint = process.env.AZURE_CONTENT_MODERATION_ENDPOINT;
 
-    const aiContentModeration = new AiContentModeration(
-        contentModeratorKey,
-        contentModeratorEndPoint
-    );
+        const aiContentModeration = new AiContentModeration(
+            contentModeratorKey,
+            contentModeratorEndPoint
+        );
 
-    const result = await aiContentModeration.textModeration(
-        'text/plain',
-        'This is a fuck you to the world'
-    );
-    console.log(result);
+        const result = await aiContentModeration.textModeration(
+            'text/plain',
+            'This is a fuck you to the world'
+        );
+        console.log(result);
     }
 
     main();
