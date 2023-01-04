@@ -1,3 +1,5 @@
+* 0.2.12
+    * Bing search - service in Marketplace is `Bing Search v7`
 * 0.2.11
     * Content moderation for image
 * 0.2.10

@@ -6,6 +6,118 @@ Use these services from a server only. These services use secrets that should be
 
 ## Services
 
+### Bing Search
+
+Bing Search Services
+
+* [Documentation](https://learn.microsoft.com/en-us/bing/search-apis/)
+* Create [**Bing Search v7**](https://portal.azure.com/#create/Microsoft.BingSearch) key in Azure portal
+#### Prerequisites
+
+* Key
+* Endpoint
+
+#### Abilities
+
+* Search - search is based on the endpoint and query parameters
+
+```javascript
+const { BingSearchV7 } = require('@azberry/az-simple');
+require('dotenv').config();
+
+const key = process.env.MICROSOFT_BING_SEARCH_V7_KEY;
+const endpoint = 'https://api.bing.microsoft.com/v7.0/news/search';
+
+async function mytest() {
+  const searchService = new BingSearchV7(key);
+
+  const results = await searchService.searchNews(endpoint, {
+    q: `Microsoft Space SDK`,
+    count: 5,
+    sortBy: `Relevance`,    // or `Date`,
+    safeSearch: `Strict`,   // or `Moderate` or `Off`
+    mkt: 'en-US',
+    freshness: `Month`,     // or `Day` or `Week`
+    textFormat: `Raw`       // or `HTML`
+  });
+
+  console.log(results);
+}
+
+mytest().catch((err) => console.log(err));
+```
+
+Example response:
+
+```json
+[
+   {
+      "name":"Best match",
+      "id":"relevance",
+      "isSelected":true,
+      "url":"https://api.bing.microsoft.com/api/v7/news/search?q=Microsoft+Space+SDK"
+   },
+   {
+      "name":"Most recent",
+      "id":"date",
+      "isSelected":false,
+      "url":"https://api.bing.microsoft.com/api/v7/news/search?q=Microsoft+Space+SDK&sortby=date"
+   }
+],
+"value":[
+   {
+      "name":"Google Chrome and Android drop TrustCor support following privacy scare",
+      "url":"https://www.msn.com/en-us/news/technology/google-chrome-and-android-drop-trustcor-support-following-privacy-scare/ar-AA15xzTx",
+      "image":[
+         "Object"
+      ],
+      "description":"Google has announced that it is set to drop TrustCor Systems as a root certificate authority (CA) for its web browser. The tech giant cited a “loss of confidence in its ability to uphold these fundamental principles and to protect and safeguard Chrome's users” in a group discussion.",
+      "about":[
+         "Array"
+      ],
+      "mentions":[
+         "Array"
+      ],
+      "provider":[
+         "Array"
+      ],
+      "datePublished":"2022-12-21T21:15:48.0000000Z",
+      "category":"ScienceAndTechnology"
+   },
+   {
+      "name":"Yves Pitsch’s Post",
+      "url":"https://www.linkedin.com/feed/update/urn:li:share:6999009834809384960/",
+      "description":"Today, Microsoft is excited to announce a crucial step towards democratizing access to space development, with the private preview release of the Azure Orbital Space SDK (Software Development Kit).",
+      "provider":[
+         "Array"
+      ],
+      "datePublished":"2022-12-21T02:11:00.0000000Z"
+   },
+   {
+      "name":"Kevin Mack’s Post",
+      "url":"https://www.linkedin.com/feed/update/urn:li:activity:6999042796934332416/",
+      "description":"Today, Microsoft is excited to announce a crucial step towards democratizing access to space development, with the private preview release of the Azure Orbital Space SDK (Software Development Kit).",
+      "provider":[
+         "Array"
+      ],
+      "datePublished":"2022-12-17T22:22:00.0000000Z"
+   },
+   {
+      "name":"What will 2023 hold for the telecoms industry?",
+      "url":"https://telecoms.com/519116/what-will-2023-hold-for-the-telecoms-industry/",
+      "image":[
+         "Object"
+      ],
+      "description":"It’s that time of year again when we ask some leading lights from the industry to gaze into their crystal balls and take a punt on what we’ll be talking about next year in the world of telecoms.",
+      "provider":[
+         "Array"
+      ],
+      "datePublished":"2022-12-23T11:59:00.0000000Z",
+      "category":"ScienceAndTechnology"
+   }
+]
+```
+
 ### Blob Storage
 
 Azure Blob Storage service

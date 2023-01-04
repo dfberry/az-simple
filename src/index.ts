@@ -14,6 +14,10 @@ export { AiContentModeration } from './azure/content-moderation';
  */
 export * from './azure/blob-storage-models';
 
+// Non-Azure
+
+export { BingSearchV7 } from './microsoft/bing-search';
+
 // Models only
 export * as BlobStorageModels from './azure/blob-storage-models';
 export * as AiVisionModels from './azure/computer-vision-models';
