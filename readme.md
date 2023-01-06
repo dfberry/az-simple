@@ -521,6 +521,122 @@ Azure Cosmos DB NoSql
 * Create new database & container
 * Get existing container
 
+### Event Hubs
+
+#### Prerequisites
+
+To send:
+
+* Event hub namespace name
+* Event hub connection string
+
+To receive:
+
+* Event hub namespace name
+* Event hub connection string
+* Storage connection string
+* Storage container name
+
+#### Abilities
+
+* Send bulk messages
+* Receive bulk messages
+
+To send or receive individual messages, use an array of 1 item.
+
+
+##### Send
+
+```javascript
+require('dotenv').config();
+const { EventHubs } = require('@azberry/az-simple');
+
+async function main() {
+    
+    const connectionString = process.env.AZURE_EVENT_HUBS_NAMESPACE_CONNECTION_STRING;
+    const eventHubName = process.env.AZURE_EVENT_HUB_NAME;
+    
+    console.log(connectionString);
+    console.log(eventHubName);
+
+  const eventHubs = new EventHubs(eventHubName);
+
+  const eventsToSend = [
+    { body: 'First event' },
+    { body: 'Second event' },
+    { body: 'Third event' }
+  ];
+
+  await eventHubs.sendBatch(connectionString, eventsToSend);
+}
+
+main().catch((err) => console.log(err));
+```
+
+A successful call returns no result.
+
+##### Receive
+
+```javascript
+require('dotenv').config();
+const { EventHubs } = require('@azberry/az-simple');
+
+async function main() {
+  const eventHubConnectionString =
+    process.env.AZURE_EVENT_HUBS_NAMESPACE_CONNECTION_STRING;
+  const eventHubName = process.env.AZURE_EVENT_HUB_NAME;
+
+  const consumerGroup = '$Default';
+
+  const storageConnectionString = process.env.AZURE_STORAGE_CONNECTION_STRING;
+  const storageContainerName = process.env.AZURE_STORAGE_CONTAINER_NAME;
+
+  const endProcessingInMilliseconds = 20000;
+
+  const eventHubs = new EventHubs(eventHubName);
+
+  const eventsReturned = await eventHubs.receiveBatch(
+    eventHubConnectionString,
+    storageConnectionString,
+    storageContainerName,
+    consumerGroup,
+    endProcessingInMilliseconds
+  );
+
+  console.log(JSON.stringify(eventsReturned));
+}
+
+main().catch((err) => console.log(err));
+```
+
+Example output
+
+```json
+[
+  {
+    "body": "First event",
+    "offset": "0",
+    "sequenceNumber": 0,
+    "enqueuedTimeUtc": "2023-01-05T16:55:17.677Z",
+    "systemProperties": {}
+  },
+  {
+    "body": "Second event",
+    "offset": "80",
+    "sequenceNumber": 1,
+    "enqueuedTimeUtc": "2023-01-05T16:55:17.677Z",
+    "systemProperties": {}
+  },
+  {
+    "body": "Third event",
+    "offset": "160",
+    "sequenceNumber": 2,
+    "enqueuedTimeUtc": "2023-01-05T16:55:17.677Z",
+    "systemProperties": {}
+  }
+]
+```
+
 ### Key Vault
 
 Azure Key Vault

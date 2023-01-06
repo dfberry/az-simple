@@ -1,3 +1,5 @@
+* 0.2.13
+    * Event hubs - messaging
 * 0.2.12
     * Bing search - service in Marketplace is `Bing Search v7`
 * 0.2.11

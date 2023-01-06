@@ -7,6 +7,7 @@ export { AiTranslator } from './azure/translator';
 export { AiVision } from './azure/computer-vision';
 export { CosmosDBNoSql } from './azure/cosmos-db-nosql';
 export { AiContentModeration } from './azure/content-moderation';
+export { EventHubs } from './azure/event-hubs';
 
 // Backwards compatibility
 /**
@@ -22,3 +23,4 @@ export { BingSearchV7 } from './microsoft/bing-search';
 export * as BlobStorageModels from './azure/blob-storage-models';
 export * as AiVisionModels from './azure/computer-vision-models';
 export * as AiContentModerationModels from './azure/content-moderation';
+export * as EventHubsModels from './azure/event-hubs-models';
