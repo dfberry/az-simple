@@ -21,7 +21,10 @@ import {
   PageSettings,
   BlobResponse,
   HierarchicalListingResponse,
-  ContainerResponse
+  ContainerResponse,
+  BlobPropertyOptions,
+  BlobPropertyResponse,
+  BlobGetPropertiesResponse
 } from './blob-storage-models';
 
 export class BlobStorage {
@@ -397,6 +400,7 @@ export class BlobStorage {
       };
     }
   }
+
   /**
    * Return Buffer of file
    * @param blobUrl
@@ -455,5 +459,40 @@ export class BlobStorage {
     } else {
       return { blobUrl, succeeded: false, error: deleteBlobResponse.errorCode };
     }
+  }
+
+  async getBlobProperties(
+    blobUrl: string,
+    { system = true, metadata = false, tags = false }: BlobPropertyOptions
+  ): Promise<BlobPropertyResponse> {
+    const blockBlobClient = new BlockBlobClient(blobUrl, this.credential);
+
+    const response: BlobPropertyResponse = {
+      system: undefined,
+      metadata: undefined,
+      tags: undefined
+    };
+
+    if (system) {
+      const blobProperties = await blockBlobClient.getProperties();
+
+      if (metadata) {
+        response.metadata = JSON.parse(JSON.stringify(blobProperties.metadata));
+      }
+      delete blobProperties.metadata;
+      delete blobProperties.contentMD5;
+      delete (blobProperties as Partial<BlobGetPropertiesResponse>)?._response;
+      response.system = JSON.parse(JSON.stringify(blobProperties));
+    }
+
+    if (tags) {
+      const tagResponse = await blockBlobClient.getTags();
+
+      if (tagResponse.errorCode === undefined && tagResponse.tags) {
+        response.tags = tagResponse.tags;
+      }
+    }
+
+    return response;
   }
 }

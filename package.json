@@ -1,6 +1,6 @@
 {
   "name": "@azberry/az-simple",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "description": "preview",
   "main": "./dist/index.js",
   "scripts": {

@@ -6,9 +6,21 @@ import {
 
 export {
   Metadata,
-  ListBlobsHierarchySegmentResponse
+  ListBlobsHierarchySegmentResponse,
+  BlobGetPropertiesResponse
 } from '@azure/storage-blob';
 export { PageSettings };
+
+export type BlobPropertyOptions = {
+  system: boolean;
+  metadata?: boolean;
+  tags?: boolean;
+};
+export type BlobPropertyResponse = {
+  system: Record<string, any> | undefined;
+  metadata: Record<string, any> | undefined;
+  tags: Record<string, any> | undefined;
+};
 
 export type StorageResponse = {
   succeeded?: boolean;

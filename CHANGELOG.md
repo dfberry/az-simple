@@ -1,3 +1,5 @@
+* 0.2.14
+    * storage - blob properties
 * 0.2.13
     * Event hubs - messaging
 * 0.2.12

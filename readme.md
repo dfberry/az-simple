@@ -120,7 +120,7 @@ Example response:
 
 ### Blob Storage
 
-Azure Blob Storage service
+Azure Blob Storage service - without heirarchical namespaces enabled (so no Data Lake)
 
 * [Documentation](https://learn.microsoft.com/en-us/azure/storage/blobs/)
 
@@ -139,6 +139,52 @@ Azure Blob Storage service
         * As Json
         * As text
         * As Buffer
+    * Get blob properties
+        * system
+        * metadata
+        * tags
+
+        ```
+        const client = new BlobStorage(AZURE_STORAGE_NAME, AZURE_STORAGE_KEY);
+
+        return await client.getBlobProperties(blobUrl, {
+            system: true,
+            metadata: true,
+            tags: true
+        });
+        ```
+
+        Example response: 
+
+        ```json
+        {
+            "system": {
+                "lastModified": "2023-01-07T18:16:17.000Z",
+                "createdOn": "2023-01-07T18:16:17.000Z",
+                "objectReplicationRules": {},
+                "blobType": "BlockBlob",
+                "leaseState": "available",
+                "leaseStatus": "unlocked",
+                "contentLength": 202300,
+                "contentType": "image/jpeg",
+                "etag": "\"0x8DAF0DB4542A49F\"",
+                "clientRequestId": "eee498d8-0f25-4307-ac0c-65c0b3869f95",
+                "requestId": "8d4c466a-401e-000d-3cce-2264e9000000",
+                "version": "2021-10-04",
+                "date": "2023-01-07T19:28:47.000Z",
+                "acceptRanges": "bytes",
+                "isServerEncrypted": true,
+                "accessTier": "Hot",
+                "accessTierInferred": true,
+                "body": true,
+                "objectReplicationSourceProperties": []
+            },
+            "metadata": {},
+            "tags": {}
+        }
+        ```
+
+
     * Upload blob
         * From local file
         * From readable stream
