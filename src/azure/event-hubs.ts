@@ -83,8 +83,16 @@ export class EventHubs {
         processEvents: async (events, context) => {
           eventData.push(...events);
 
-          // Update the checkpoint.
-          await context.updateCheckpoint(events[events.length - 1]);
+          if (
+            events &&
+            events !== undefined &&
+            events.length > 0 &&
+            events[events.length - 1] !== undefined
+          ) {
+            await context.updateCheckpoint(
+              events[events.length - 1] as ReceivedEventData
+            );
+          }
         },
 
         processError: async (err) => {

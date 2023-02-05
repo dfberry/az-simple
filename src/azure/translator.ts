@@ -33,7 +33,8 @@ export class AiTranslator {
         if (
           item?.translations &&
           item?.translations.length > 0 &&
-          item?.translations?.[0].text
+          item?.translations[0] &&
+          item?.translations[0]?.text
         ) {
           return item?.translations?.[0].text as string;
         } else {
