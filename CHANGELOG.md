@@ -1,3 +1,11 @@
+* 0.2.15
+    * tsconfig additions which required fixes for Event Grid and Translator
+        ```
+        "useUnknownInCatchVariables": true,
+        "noUncheckedIndexedAccess": true
+        ```  
+    * Storage Queues
+    * Docs -> [TypeScript design decisions](./docs/design-typescript.md)
 * 0.2.14
     * storage - blob properties
 * 0.2.13

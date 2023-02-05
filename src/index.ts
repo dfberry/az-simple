@@ -8,7 +8,7 @@ export { AiVision } from './azure/computer-vision';
 export { CosmosDBNoSql } from './azure/cosmos-db-nosql';
 export { AiContentModeration } from './azure/content-moderation';
 export { EventHubs } from './azure/event-hubs';
-
+export { QueueStorage } from './azure/queue-storage';
 // Backwards compatibility
 /**
  * @deprecated Don't reference Blob models directly. Use the BlobStorageModels object.
@@ -24,3 +24,4 @@ export * as BlobStorageModels from './azure/blob-storage-models';
 export * as AiVisionModels from './azure/computer-vision-models';
 export * as AiContentModerationModels from './azure/content-moderation';
 export * as EventHubsModels from './azure/event-hubs-models';
+export * as QueueStorageModels from './azure/queue-storage-models';
