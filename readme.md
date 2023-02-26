@@ -719,6 +719,118 @@ Use this to access [Cosmos DB for Mongo API](https://learn.microsoft.com/en-us/a
 
 * Get blob as JSON
 
+### Azure Cache for Redis
+
+Use this to access [Azure Cache for Redis](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis).
+
+#### Prerequisites
+
+* Host name: `YOUR-AZURE-CACHE-FOR-REDIS-ACCOUNT-NAME.redis.cache.windows.net`
+* Password: primary access key
+* Port: (default) 6380
+* Database: optional, 0-15 (16 possible databases)
+
+#### Abilities
+
+* Connect
+* Get current client
+* Get status
+* Get key
+* Get client type
+* Get key type
+* Set key
+* Delete key
+* Ping
+* Send command
+  
+```javascript
+const { RedisCache } = require('@azberry/az-simple');
+const params = {
+  host: process.env.AZURE_CACHE_FOR_REDIS_HOST_NAME,
+  password: process.env.AZURE_CACHE_FOR_REDIS_ACCESS_KEY,
+  port: process.env.AZURE_CACHE_FOR_REDIS_PORT,
+  database: 12
+};
+
+async function main() {
+    const redisCache = new RedisCache(params);
+    await redisCache.connect();
+
+    const name1 = 'Dog:001:a';
+    const name2 = 'Dog:002:a';
+    const name3 = 'Dog:003:a';
+    const value = 'Here we go again';
+
+    // PING
+    console.log(await redisCache.ping());
+
+    // STATUS: isReady, isOpen, serverTime
+    console.log(`status = ${JSON.stringify(await redisCache.status())}`);
+
+    // Set key
+    const set1 = await redisCache.set(name1, value);
+    console.log(set1);
+
+    // Set Key 
+    const set2 = await redisCache.set(name2, value);
+    console.log(set2);
+
+    // Get key type: `string`
+    const type2 = await redisCache.type(name2);
+    console.log(`type: ${type2}`);
+
+    // Set key with short cache time
+    const set3 = await redisCache.set(name3, value, 50);
+    console.log(set3);
+
+    // DBSize - item count == 3
+    const dbSize = await redisCache.sendCommand(['DBSIZE']);
+    console.log(`size ${JSON.stringify(dbSize)}`);
+
+    // Delete second item
+    const deleteName2 = await redisCache.delete(name2);
+    console.log(`delete ${JSON.stringify(deleteName2)}`);
+
+    // DBSize - item count == 2
+    const dbSize1 = await redisCache.sendCommand(['DBSIZE']);
+    console.log(`size ${JSON.stringify(dbSize1)}`);
+
+    // Get first item: "Here we go again"
+    const get1 = await redisCache.get(name1);
+    console.log(JSON.stringify(get1));
+
+    // Does first item exist: returns 1
+    const doesExist = await redisCache.sendCommand(['EXISTS', name1]);
+    console.log(`key 1 exists ${JSON.stringify(doesExist)}`);
+
+    // DBSize - item count - 2
+    const dbSize2 = await redisCache.sendCommand(['DBSIZE']);
+    console.log(`size ${JSON.stringify(dbSize2)}`);
+
+    // List all keys: ["Dog:001:a","Dog:003:a"]
+    const keys = await redisCache.sendCommand(['KEYS', '*']);
+    console.log(`list ${JSON.stringify(keys)}`);
+
+    // DBSize - item count - 2 (third item hasn't timed out yet)
+    const dbSize3 = await redisCache.sendCommand(['DBSIZE']);
+    console.log(`size ${JSON.stringify(dbSize3)}`);
+
+    // Remove keys
+    // const flushall = await redisCache.sendCommand(['FLUSHALL']);
+    //console.log(`flushall ${JSON.stringify(flushall)}`);
+
+    // Want to do your own thing with redis? 
+    const client = redisCache.getCurrentClient();
+
+    // Disconnect with wait
+    await redisCache.DisconnectWhenFinished();
+
+    // Disconnect
+    await redisCache.disconnectNow();
+}
+```
+
+
 ### Translator
 
 Azure Cognitive Service Translator Text

@@ -1,3 +1,5 @@
+* 0.2.15
+    * redis
 * 0.2.14
     * storage - blob properties
 * 0.2.13

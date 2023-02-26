@@ -18,6 +18,7 @@ export * from './azure/blob-storage-models';
 // Non-Azure
 
 export { BingSearchV7 } from './microsoft/bing-search';
+export { RedisCache, IRedisCacheParams } from './redis/redis';
 
 // Models only
 export * as BlobStorageModels from './azure/blob-storage-models';

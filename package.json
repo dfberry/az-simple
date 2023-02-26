@@ -1,6 +1,6 @@
 {
   "name": "@azberry/az-simple",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "description": "preview",
   "main": "./dist/index.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "build": "tsc",
     "mgr:publish": "npm publish",
     "mgr:unpublish": "npm unpublish @azberry/az-simple@0.2.7",
-    "mgr:deprecate": "npm deprecate @azberry/az-simple@0.2.7 \"Use the latest version\""
+    "mgr:deprecate": "npm deprecate @azberry/az-simple@0.2.7 \"Use the latest version\"",
   },
   "files": [
     "dist"
@@ -36,6 +36,7 @@
     "@azure/identity": "^1.1.0",
     "@azure/keyvault-secrets": "^4.6.0",
     "@azure/ms-rest-azure-js": "^2.1.0",
+    "@azure/service-bus": "^7.8.0",
     "@azure/storage-blob": "^12.12.0",
     "@types/node": "^18.11.9",
     "azure-cognitiveservices-newssearch": "^2.0.0",
@@ -43,7 +44,8 @@
     "mongodb": "^4.12.1",
     "ms-rest-azure": "^3.0.2",
     "node-fetch": "^2.6.7",
-    "querystring": "^0.2.1"
+    "querystring": "^0.2.1",
+    "redis": "^4.6.5"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.26.0",
